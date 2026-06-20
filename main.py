@@ -55,7 +55,8 @@ class Perceptron:
     
     def monkey_step(self, X: list[np.ndarray], y_true_values: np.ndarray, loss_function: callable, learning_rate: float):
         # Optimization but less complex math
-        
+        # Steps by getting the loss from using the new weight / bias and subtracting it by the old loss 
+
         for idx, w in enumerate(self.weights):
             baseline_prediction = self.predict(X)
             baseline_loss = loss_function(baseline_prediction, y_true_values)
@@ -92,7 +93,7 @@ class ANN:
                 print(f' - Neuron: (Weights: {p.weights}, Bias: {p.bias}, AF: {p.activation_function})')
 
     def get_layers(self):
-        layers = [[] for neuron_set in self.neuron_sets if isinstance(neuron_set, tuple)]
+        layers = [[] for neuron_set in self.neuron_sets if isinstance(neuron_set, tuple)]  # Filters out activation functions 
         layer_idx = 0
         
         for set_idx, neuron_set in enumerate(self.neuron_sets):
