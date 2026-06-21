@@ -6,13 +6,17 @@ import matplotlib.pyplot as plt
 RNG = np.random.default_rng()
 
 def ReLU(number: int):
-        """Returns max value between number and 0"""
+        """
+        Returns max value between number and 0.
+        """
         return max(0, number)
     
 
 class MSE:
     def __new__(self, y_pred_values: np.ndarray, y_true_values: np.ndarray):
-        """Returns the mean of the squares of the differences between the predicted and true values"""
+        """
+        Returns the mean of the squares of the differences between the predicted and true values.
+        """
         if not isinstance(y_pred_values, np.ndarray) or not isinstance(y_true_values, np.ndarray):
             y_pred_values = np.array(y_pred_values)
             y_true_values = np.array(y_true_values)
@@ -24,11 +28,11 @@ class MSE:
         return mean_squared_difference 
     
 
-
-
 class Perceptron:
     def __init__(self, input_neurons: int, activation_function: callable = None):
-        """A basic network structure"""
+        """
+        A basic network structure. A single neuron with weights, bias, and optional activation.
+        """
         self.input_neurons = input_neurons
         self.activation_function = activation_function
         self.weights = RNG.random(self.input_neurons)
@@ -54,7 +58,10 @@ class Perceptron:
         return predictions
     
     def monkey_step(self, X: list[np.ndarray], y_true_values: np.ndarray, loss_function: callable, learning_rate: float):
-        # Optimization but less complex math
+        """
+        Adjusts weights and biases by estimating gradient numerically and moving in direction where loss decreases.
+        """
+        # Optimization but less complex math (and much more inefficient)
         # Steps by getting the loss from using the new weight / bias and subtracting it by the old loss 
 
         for idx, w in enumerate(self.weights):
@@ -83,6 +90,9 @@ class Perceptron:
 
 class ANN:
     def __init__(self, neuron_sets: list[tuple[int, int]]):
+        """
+        Neural Network composed of layers of perceptrons.
+        """
         self.neuron_sets = neuron_sets
         self.layers = self.get_layers()
     
@@ -116,12 +126,14 @@ class ANN:
         return layers
     
     def forward(self, X):
+        # Collect the values of all neurons in each layer, then pass it forward to the next set, repeat.
         for layer_idx, layer in enumerate(self.layers):
             current_neuron_numbers = []
 
             for p in layer:
+                # If this is the first layer, use the original inputs, otherwise use the last layer's values.
                 if layer_idx == 0:
-                    current_neuron_numbers.append(p.predict(X)[0])
+                    current_neuron_numbers.append(p.predict(X)[0])  # Return first index, predict method returns list
                 else:
                     current_neuron_numbers.append(p.predict([neuron_numbers])[0])
 
